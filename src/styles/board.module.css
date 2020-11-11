@@ -3,16 +3,15 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 
-  width: 606px;
-  height: 606px;
-  background-color: grey;
+  width: 618px;
+  height: 618px;
 }
 
 .boardItem {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border: 3px solid black;
   width: 200px;
   height: 200px;
   padding: 0px;
@@ -22,4 +21,25 @@
 .image {
   max-width: 90%;
   max-height: 90%;
+}
+
+.resetBtn {
+  position: absolute;
+  top: 50%;
+  left: 72%;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  padding: 2rem 2rem;
+  margin: 0;
+  text-decoration: none;
+  background: #3f62d4;
+  color: #ffffff;
+  font-family: "Merriweather Sans", sans-serif;
+  font-size: 2rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 250ms ease-in-out, transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }

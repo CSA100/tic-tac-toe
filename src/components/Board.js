@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "../styles/board.module.css";
 import cross from "../cross.svg";
 import circle from "../circle.svg";
-import { render } from "@testing-library/react";
 
 const BoardItem = ({ shape, onClick }) => {
   const renderItem = () => {
@@ -36,82 +35,64 @@ const Board = () => {
   ]);
   const [currentPlayer, setPlayer] = useState(1);
   const [won, setWon] = useState(false);
-  const isMounted = useRef(false);
 
-  const renderHeader = () => {
-    if (won) {
-      return <h1>Player {currentPlayer === 1 ? 2 : 1} wins!</h1>;
-    }
-
-    if (!won) {
-      return <h1>Player {currentPlayer}'s turn!</h1>;
-    }
+  const resetGame = () => {
+    setPositions([null, null, null, null, null, null, null, null, null]);
+    setPlayer(1);
+    setWon(false);
   };
 
-  useEffect(() => {
-    if (isMounted.current) {
-      for (let i = 0; i < 7; i += 3) {
-        //Check horizontal
-        if (
-          positions[i] &&
-          positions[i] === positions[i + 1] &&
-          positions[i] === positions[i + 2]
-        ) {
-          console.log("Player " + currentPlayer + " Wins! YAAAYY!");
-          setWon(true);
-        }
+  const checkWin = (p) => {
+    for (let i = 0; i < 7; i += 3) {
+      //Check horizontal
+      if (p[i] && p[i] === p[i + 1] && p[i] === p[i + 2]) {
+        return true;
       }
-
-      for (let i = 0; i < 3; i++) {
-        //Check vertical wins
-        if (
-          positions[i] &&
-          positions[i] === positions[i + 3] &&
-          positions[i] === positions[i + 6]
-        ) {
-          console.log("Player " + currentPlayer + " Wins! YAAAYY!");
-          setWon(true);
-        }
-      }
-
-      //Check Diagonal wins
-      if (
-        positions[0] &&
-        positions[0] === positions[4] &&
-        positions[0] === positions[8]
-      ) {
-        console.log("Player " + currentPlayer + " Wins! YAAAYY!");
-        setWon(true);
-      }
-
-      if (
-        positions[2] &&
-        positions[2] === positions[4] &&
-        positions[2] === positions[6]
-      ) {
-        console.log("Player " + currentPlayer + " Wins! YAAAYY!");
-        setWon(true);
-      }
-
-      if (!won) {
-        setPlayer(currentPlayer === 1 ? 2 : 1);
-      }
-    } else {
-      isMounted.current = true;
     }
-  }, [positions]);
+    //Check vertical wins
+    for (let i = 0; i < 3; i++) {
+      if (p[i] && p[i] === p[i + 3] && p[i] === p[i + 6]) {
+        return true;
+      }
+    }
+
+    //Check Diagonal wins
+    if (p[0] && p[0] === p[4] && p[0] === p[8]) {
+      return true;
+    }
+
+    if (p[2] && p[2] === p[4] && p[2] === p[6]) {
+      return true;
+    }
+  };
 
   const handleItemClick = (atPosition) => {
     if (!positions[atPosition] && !won) {
       const newPosition = positions.map((originalShape, position) => {
         if (position === atPosition && !originalShape) {
-          return currentPlayer === 1 ? "X" : "O";
+          return currentPlayer === 1 ? "O" : "X";
         } else {
           return originalShape;
         }
       });
+      const w = checkWin(newPosition);
+      if (w) {
+        setPositions(newPosition);
+        setWon(true);
+      } else {
+        setPositions(newPosition);
+        setPlayer((c) => (currentPlayer === 1 ? 2 : 1));
+      }
+    }
+  };
 
-      setPositions(newPosition);
+  const renderHeader = () => {
+    if (won) {
+      return <h1>Player {currentPlayer} wins!</h1>;
+    }
+
+    if (!won) {
+      return <h1 className="">Player {currentPlayer}</h1>;
     }
   };
 
@@ -129,6 +110,12 @@ const Board = () => {
         <BoardItem shape={positions[7]} onClick={() => handleItemClick(7)} />
         <BoardItem shape={positions[8]} onClick={() => handleItemClick(8)} />
       </div>
+
+      {won && (
+        <button onClick={resetGame} className={styles.resetBtn}>
+          New Game
+        </button>
+      )}
     </>
   );
 };
