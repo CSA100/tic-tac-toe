@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import styles from "../styles/board.module.css";
 import cross from "../cross.svg";
 import circle from "../circle.svg";
+import "../styles/gridBorders.css";
 
-const BoardItem = ({ shape, onClick }) => {
+const BoardItem = ({ position, shape, onClick }) => {
   const renderItem = () => {
     if (shape) {
       if (shape === "X") {
@@ -15,7 +16,7 @@ const BoardItem = ({ shape, onClick }) => {
   };
 
   return (
-    <div onClick={onClick} className={styles.boardItem}>
+    <div onClick={onClick} className={`${styles.boardItem} ${position}`}>
       {renderItem()}
     </div>
   );
@@ -59,11 +60,11 @@ const Board = () => {
     //Check Diagonal wins
     if (p[0] && p[0] === p[4] && p[0] === p[8]) {
       return true;
-    }
-
-    if (p[2] && p[2] === p[4] && p[2] === p[6]) {
+    } else if (p[2] && p[2] === p[4] && p[2] === p[6]) {
       return true;
     }
+
+    return false;
   };
 
   const handleItemClick = (atPosition) => {
@@ -88,11 +89,11 @@ const Board = () => {
 
   const renderHeader = () => {
     if (won) {
-      return <h1>Player {currentPlayer} wins!</h1>;
+      return <h1 className={styles.header}>Player {currentPlayer} wins!</h1>;
     }
 
     if (!won) {
-      return <h1 className="">Player {currentPlayer}</h1>;
+      return <h1 className={styles.header}>Player {currentPlayer}</h1>;
     }
   };
 
@@ -100,15 +101,51 @@ const Board = () => {
     <>
       {renderHeader()}
       <div className={styles.board}>
-        <BoardItem shape={positions[0]} onClick={() => handleItemClick(0)} />
-        <BoardItem shape={positions[1]} onClick={() => handleItemClick(1)} />
-        <BoardItem shape={positions[2]} onClick={() => handleItemClick(2)} />
-        <BoardItem shape={positions[3]} onClick={() => handleItemClick(3)} />
-        <BoardItem shape={positions[4]} onClick={() => handleItemClick(4)} />
-        <BoardItem shape={positions[5]} onClick={() => handleItemClick(5)} />
-        <BoardItem shape={positions[6]} onClick={() => handleItemClick(6)} />
-        <BoardItem shape={positions[7]} onClick={() => handleItemClick(7)} />
-        <BoardItem shape={positions[8]} onClick={() => handleItemClick(8)} />
+        <BoardItem
+          position="one"
+          shape={positions[0]}
+          onClick={() => handleItemClick(0)}
+        />
+        <BoardItem
+          position="two"
+          shape={positions[1]}
+          onClick={() => handleItemClick(1)}
+        />
+        <BoardItem
+          position="three"
+          shape={positions[2]}
+          onClick={() => handleItemClick(2)}
+        />
+        <BoardItem
+          position="four"
+          shape={positions[3]}
+          onClick={() => handleItemClick(3)}
+        />
+        <BoardItem
+          position="five"
+          shape={positions[4]}
+          onClick={() => handleItemClick(4)}
+        />
+        <BoardItem
+          position="six"
+          shape={positions[5]}
+          onClick={() => handleItemClick(5)}
+        />
+        <BoardItem
+          position="seven"
+          shape={positions[6]}
+          onClick={() => handleItemClick(6)}
+        />
+        <BoardItem
+          position="eight"
+          shape={positions[7]}
+          onClick={() => handleItemClick(7)}
+        />
+        <BoardItem
+          position="nine"
+          shape={positions[8]}
+          onClick={() => handleItemClick(8)}
+        />
       </div>
 
       {won && (

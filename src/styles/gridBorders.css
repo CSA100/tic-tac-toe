@@ -1,0 +1,35 @@
+.one {
+  border-right: 3px solid black;
+  border-bottom: 3px solid black;
+}
+
+.two {
+  border-bottom: 3px solid black;
+}
+
+.three {
+  border-left: 3px solid black;
+  border-bottom: 3px solid black;
+}
+
+.four {
+  border-right: 3px solid black;
+  border-bottom: 3px solid black;
+}
+
+.five {
+  border-bottom: 3px solid black;
+}
+
+.six {
+  border-left: 3px solid black;
+  border-bottom: 3px solid black;
+}
+
+.seven {
+  border-right: 3px solid black;
+}
+
+.nine {
+  border-left: 3px solid black;
+}

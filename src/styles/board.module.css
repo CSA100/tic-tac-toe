@@ -1,17 +1,17 @@
 .board {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 
-  width: 618px;
-  height: 618px;
+  width: 606px;
+  height: 609px;
 }
 
 .boardItem {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px solid black;
   width: 200px;
   height: 200px;
   padding: 0px;
@@ -25,21 +25,29 @@
 
 .resetBtn {
   position: absolute;
-  top: 50%;
-  left: 72%;
+  top: 450px;
+  right: 280px;
   display: inline-block;
   border: none;
   border-radius: 10px;
   padding: 2rem 2rem;
   margin: 0;
   text-decoration: none;
-  background: #3f62d4;
+  background: #187e46;
   color: #ffffff;
-  font-family: "Merriweather Sans", sans-serif;
-  font-size: 2rem;
+  font-family: "Patrick Hand", sans-serif;
+  font-size: 3rem;
   cursor: pointer;
   text-align: center;
   transition: background 250ms ease-in-out, transform 150ms ease;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+.header {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  color: white;
+  font-family: "Patrick Hand", sans-serif;
+  font-size: 90px;
 }
