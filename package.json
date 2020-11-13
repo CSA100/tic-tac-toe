@@ -16,7 +16,6 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.1",
     "mongoose": "^5.10.13",
-    "nodemon": "^2.0.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.11.0",
@@ -27,11 +26,12 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run build && node backend/server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "nodemon backend/server"
+    "serve": "nodemon backend/server",
+    "view": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [
@@ -50,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
