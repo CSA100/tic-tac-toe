@@ -1,28 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/board.module.css";
-import cross from "../cross.svg";
-import circle from "../circle.svg";
-import "../styles/gridBorders.css";
+import cross from "../resources/cross.svg";
+import circle from "../resources/circle.svg";
+import "../styles/gridStyles.css";
 
-const BoardItem = ({ position, shape, onClick }) => {
-  const renderItem = () => {
-    if (shape) {
-      if (shape === "X") {
-        return <img className={styles.image} src={cross} alt="cross" />;
-      } else if (shape === "O") {
-        return <img className={styles.image} src={circle} alt="circle" />;
-      }
-    }
-  };
-
-  return (
-    <div onClick={onClick} className={`${styles.boardItem} ${position}`}>
-      {renderItem()}
-    </div>
-  );
-};
-
-const Board = () => {
+const Board = ({ socket, room }) => {
   const [positions, setPositions] = useState([
     null,
     null,
@@ -34,72 +16,77 @@ const Board = () => {
     null,
     null,
   ]);
-  const [currentPlayer, setPlayer] = useState(1);
-  const [won, setWon] = useState(false);
+  const [currentPlayer, setPlayer] = useState(null);
+  const [status, setStatus] = useState("playing");
+
+  // Load the socket
+  useEffect(() => {
+    socket.on("update", (state) => {
+      console.log(state);
+      setPositions(state.positions);
+      setPlayer(state.currentPlayer);
+      setStatus(state.status);
+    });
+  }, [socket]);
 
   const resetGame = () => {
-    setPositions([null, null, null, null, null, null, null, null, null]);
-    setPlayer(1);
-    setWon(false);
+    socket.emit("reset", room);
   };
 
-  const checkWin = (p) => {
-    for (let i = 0; i < 7; i += 3) {
-      //Check horizontal
-      if (p[i] && p[i] === p[i + 1] && p[i] === p[i + 2]) {
-        return true;
-      }
-    }
-    //Check vertical wins
-    for (let i = 0; i < 3; i++) {
-      if (p[i] && p[i] === p[i + 3] && p[i] === p[i + 6]) {
-        return true;
-      }
-    }
-
-    //Check Diagonal wins
-    if (p[0] && p[0] === p[4] && p[0] === p[8]) {
-      return true;
-    } else if (p[2] && p[2] === p[4] && p[2] === p[6]) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const handleItemClick = (atPosition) => {
-    if (!positions[atPosition] && !won) {
-      const newPosition = positions.map((originalShape, position) => {
-        if (position === atPosition && !originalShape) {
-          return currentPlayer === 1 ? "O" : "X";
-        } else {
-          return originalShape;
-        }
-      });
-      const w = checkWin(newPosition);
-      if (w) {
-        setPositions(newPosition);
-        setWon(true);
-      } else {
-        setPositions(newPosition);
-        setPlayer((c) => (currentPlayer === 1 ? 2 : 1));
-      }
+  const handleItemClick = (pos) => {
+    if (status === "playing" && currentPlayer === socket.id) {
+      socket.emit("click", pos, room);
     }
   };
 
   const renderHeader = () => {
-    if (won) {
-      return <h1 className={styles.header}>Player {currentPlayer} wins!</h1>;
+    if (status === "playing") {
+      if (currentPlayer === socket.id) {
+        return <h1 className={styles.header}>Your turn</h1>;
+      } else {
+        return <h1 className={styles.header}>Opponent's Turn</h1>;
+      }
+    } else if (status === "won") {
+      if (currentPlayer === socket.id) {
+        return <h1 className={styles.header}>You Win!</h1>;
+      } else {
+        return <h1 className={styles.header}>You Lose</h1>;
+      }
+    } else if (status === "draw") {
+      return <h1 className={styles.header}>It's a draw</h1>;
+    } else {
+      return <h1 className={styles.header}>Loading...</h1>;
     }
+  };
 
-    if (!won) {
-      return <h1 className={styles.header}>Player {currentPlayer}</h1>;
-    }
+  const BoardItem = ({ position, shape, onClick }) => {
+    const renderItem = () => {
+      if (shape) {
+        if (shape === "X") {
+          return <img className={styles.image} src={cross} alt="cross" />;
+        } else if (shape === "O") {
+          return <img className={styles.image} src={circle} alt="circle" />;
+        }
+      }
+    };
+
+    return (
+      <div onClick={onClick} className={`${styles.boardItem} ${position}`}>
+        {renderItem()}
+      </div>
+    );
   };
 
   return (
     <>
       {renderHeader()}
+
+      {status !== "playing" && (
+        <button onClick={resetGame} className={styles.resetBtn}>
+          New Game
+        </button>
+      )}
+
       <div className={styles.board}>
         <BoardItem
           position="one"
@@ -147,12 +134,6 @@ const Board = () => {
           onClick={() => handleItemClick(8)}
         />
       </div>
-
-      {won && (
-        <button onClick={resetGame} className={styles.resetBtn}>
-          New Game
-        </button>
-      )}
     </>
   );
 };

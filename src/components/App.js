@@ -1,16 +1,27 @@
-import React from "react";
-import Board from "./Board";
+import React, { useState } from "react";
+import Game from "./Game";
 import "../styles/index.css";
 import styles from "../styles/home.module.css";
+import Form from "./Form";
 
-export default function App() {
+const App = () => {
+  const [room, setRoom] = useState(null);
+
+  const onSubmit = (data) => {
+    setRoom(data.createID);
+  };
+
   return (
-    <div className={styles.home}>
-      <div>
-        <div className={styles.board}>
-          <Board />
+    <>
+      {!room && (
+        <div className={styles.welcome}>
+          <h1 className={styles.formHeader}>Play Tic Tac Toe</h1>
+          <Form onSubmit={onSubmit} />
         </div>
-      </div>
-    </div>
+      )}
+      {room && <Game room={room} />}
+    </>
   );
-}
+};
+
+export default App;

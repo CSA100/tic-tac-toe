@@ -1,35 +1,47 @@
 .one {
   border-right: 3px solid black;
   border-bottom: 3px solid black;
+  grid-area: 1 / 1 / span 1 / span 1;
 }
 
 .two {
   border-bottom: 3px solid black;
+  grid-area: 1 / 2 / span 1 / span 1;
 }
 
 .three {
   border-left: 3px solid black;
   border-bottom: 3px solid black;
+  grid-area: 1 / 3 / span 1 / span 1;
 }
 
 .four {
   border-right: 3px solid black;
   border-bottom: 3px solid black;
+  grid-area: 2 / 1 / span 1 / span 1;
 }
 
 .five {
   border-bottom: 3px solid black;
+  grid-area: 2 / 2 / span 1 / span 1;
 }
 
 .six {
   border-left: 3px solid black;
   border-bottom: 3px solid black;
+  grid-area: 2 / 3 / span 1 / span 1;
 }
 
 .seven {
   border-right: 3px solid black;
+  grid-area: 3 / 1 / span 1 / span 1;
+}
+
+.eight {
+  grid-area: 3 / 2 / span 1 / span 1;
 }
 
 .nine {
   border-left: 3px solid black;
+  grid-area: 3 / 3 / span 1 / span 1;
 }

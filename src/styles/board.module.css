@@ -1,19 +1,23 @@
 .board {
-  position: relative;
+  margin-top: 40px;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 
-  width: 606px;
-  height: 609px;
+  width: 450px;
+  height: 450px;
+  transition: all 0.3s ease;
 }
 
 .boardItem {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 200px;
   padding: 0px;
   margin: 0px;
 }
@@ -24,19 +28,16 @@
 }
 
 .resetBtn {
-  position: absolute;
-  top: 450px;
-  right: 280px;
+  margin-top: 10px;
   display: inline-block;
   border: none;
   border-radius: 10px;
-  padding: 2rem 2rem;
-  margin: 0;
+  padding: 1rem 1rem;
   text-decoration: none;
   background: #187e46;
   color: #ffffff;
   font-family: "Patrick Hand", sans-serif;
-  font-size: 3rem;
+  font-size: 2rem;
   cursor: pointer;
   text-align: center;
   transition: background 250ms ease-in-out, transform 150ms ease;
@@ -45,9 +46,21 @@
 }
 
 .header {
-  margin-top: 30px;
-  margin-bottom: 50px;
+  margin: 0;
+  padding-top: 10px;
   color: white;
   font-family: "Patrick Hand", sans-serif;
-  font-size: 90px;
+  font-size: 70px;
+}
+
+.waiting {
+  padding-top: 45vh;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .board {
+    width: 500px;
+    height: 500px;
+  }
 }
