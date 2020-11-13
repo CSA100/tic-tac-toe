@@ -37,7 +37,8 @@ app.get("*", (req, res) => {
 
 // connect();
 
-const server = app.listen(5000, () => {
+const port = process.env.PORT || 5000;
+const server = app.listen(port, () => {
   console.log("Server Connected");
 });
 
