@@ -3,9 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const socketIO = require("socket.io");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const app = express();
-const Room = require("./roomManager");
+// const Room = require("./roomManager");
 
 // Middleware
 
@@ -14,9 +14,9 @@ app.use(cors());
 
 // Serve React Files
 
-// app.use(express.static(path.join(__dirname, "../build")));
+app.use(express.static(path.join(__dirname, "../build")));
 app.get("*", (req, res) => {
-  res.send("server is working").status(200);
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
 // Connect to Atlas and start server
 
@@ -178,13 +178,17 @@ io.on("connection", (socket) => {
         rooms[roomLeft].players.indexOf(socket.id),
         1
       );
-      rooms[roomLeft].state = {
-        positions: [null, null, null, null, null, null, null, null, null],
-        currentPlayer: rooms[roomLeft].players[0],
-        status: "playing",
-      };
-      io.to(roomLeft).emit("update", rooms[roomLeft].state);
-      io.to(roomLeft).emit("playerLeft");
+      if (rooms[roomLeft].players.length === 0) {
+        delete rooms[roomLeft];
+      } else {
+        rooms[roomLeft].state = {
+          positions: [null, null, null, null, null, null, null, null, null],
+          currentPlayer: rooms[roomLeft].players[0],
+          status: "playing",
+        };
+        io.to(roomLeft).emit("update", rooms[roomLeft].state);
+        io.to(roomLeft).emit("playerLeft");
+      }
     }
   });
 });
