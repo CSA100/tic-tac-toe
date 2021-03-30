@@ -86,7 +86,7 @@ const Board = ({ socket, room }) => {
           New Game
         </button>
       )}
-
+      <div className={styles.dummy}></div>
       <div className={styles.board}>
         <BoardItem
           position="one"
